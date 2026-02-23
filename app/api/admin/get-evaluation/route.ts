@@ -2,6 +2,8 @@ import { NextRequest } from "next/server";
 import { db } from "@/lib/db";
 import { getAdminSession } from "@/lib/auth";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: NextRequest) {
   const ok = await getAdminSession();
   if (!ok) return Response.json({ error: "Unauthorized" }, { status: 401 });
