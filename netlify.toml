@@ -2,7 +2,7 @@
 # URL: https://ssoftsols-examportal.netlify.app
 
 [build]
-  command = "bash scripts/build-netlify.sh"
+  command = "node scripts/build-netlify.js"
 
 [build.environment]
   NODE_VERSION = "20"
