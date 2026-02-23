@@ -4,7 +4,7 @@ import { getStudentSession } from "@/lib/auth";
 import fs from "fs";
 import path from "path";
 
-const UPLOADS_DIR = process.env.NETLIFY
+const UPLOADS_DIR = process.env.NODE_ENV === "production"
   ? path.join("/tmp", "uploads")
   : path.join(process.cwd(), "public", "uploads");
 

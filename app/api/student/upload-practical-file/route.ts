@@ -6,7 +6,7 @@ import path from "path";
 
 const ALLOWED_EXT = new Set(["zip", "stl", "glb", "obj", "pdf"]);
 const MAX_SIZE = 10 * 1024 * 1024 * 1024; // 10GB
-const UPLOADS_DIR = process.env.NETLIFY
+const UPLOADS_DIR = process.env.NODE_ENV === "production"
   ? path.join("/tmp", "uploads")
   : path.join(process.cwd(), "public", "uploads");
 
