@@ -17,7 +17,7 @@ const schemaPrisma = path.join(__dirname, '../prisma/schema.prisma');
 fs.copyFileSync(schemaPostgres, schemaPrisma);
 
 console.log('=== Generating Prisma client ===');
-run('npx prisma generate');
+run('npx prisma@5 generate');
 
 process.env.DATABASE_URL = process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL;
 if (!process.env.DATABASE_URL) {
@@ -28,7 +28,7 @@ if (!process.env.DATABASE_URL) {
 }
 
 console.log('=== Pushing database schema ===');
-run('npx prisma db push');
+run('npx prisma@5 db push');
 
 console.log('=== Building Next.js ===');
-run('npx next build');
+run('npm run build');
