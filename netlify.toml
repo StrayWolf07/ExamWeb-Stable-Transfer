@@ -1,0 +1,11 @@
+# Site name: ssoftsols-examportal
+# URL: https://ssoftsols-examportal.netlify.app
+
+[build]
+  command = "bash scripts/build-netlify.sh"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
