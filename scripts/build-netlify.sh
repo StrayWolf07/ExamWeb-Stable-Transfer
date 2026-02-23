@@ -8,9 +8,11 @@ cp prisma/schema.postgres.prisma prisma/schema.prisma
 echo "=== Generating Prisma client ==="
 npx prisma generate
 
+# Support Netlify's NETLIFY_DATABASE_URL (Neon add-on) as fallback for DATABASE_URL
+export DATABASE_URL="${DATABASE_URL:-$NETLIFY_DATABASE_URL}"
 if [ -z "$DATABASE_URL" ]; then
   echo ""
-  echo "ERROR: DATABASE_URL is not set."
+  echo "ERROR: DATABASE_URL (or NETLIFY_DATABASE_URL) is not set."
   echo "Add it in Netlify: Site settings → Environment variables"
   echo "Get a free PostgreSQL URL from https://neon.tech or https://supabase.com"
   exit 1
