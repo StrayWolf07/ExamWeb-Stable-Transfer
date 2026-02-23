@@ -32,20 +32,18 @@ if (!process.env.DATABASE_URL) {
 }
 console.log('DATABASE_URL is set (length ' + (process.env.DATABASE_URL || '').length + ')');
 
-console.log('=== Swapping to PostgreSQL schema ===');
+console.log('=== Using PostgreSQL schema for build ===');
 const schemaPostgres = path.join(repoRoot, 'prisma/schema.postgres.prisma');
-const schemaPrisma = path.join(repoRoot, 'prisma/schema.prisma');
 if (!fs.existsSync(schemaPostgres)) {
   console.error('Missing:', schemaPostgres);
   process.exit(1);
 }
-fs.copyFileSync(schemaPostgres, schemaPrisma);
 
 console.log('=== Generating Prisma client ===');
-run('npx prisma@5.22.0 generate');
+run('npm exec -- prisma generate --schema prisma/schema.postgres.prisma');
 
 console.log('=== Pushing database schema ===');
-run('npx prisma@5.22.0 db push');
+run('npm exec -- prisma db push --schema prisma/schema.postgres.prisma');
 
 console.log('=== Building Next.js ===');
 run('npm run build');
