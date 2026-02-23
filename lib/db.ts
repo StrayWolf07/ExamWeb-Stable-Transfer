@@ -1,14 +1,17 @@
 import { PrismaClient } from "@prisma/client";
 
-// Support Netlify's Neon add-on (NETLIFY_DATABASE_URL) when DATABASE_URL is not set
-if (!process.env.DATABASE_URL && process.env.NETLIFY_DATABASE_URL) {
-  process.env.DATABASE_URL = process.env.NETLIFY_DATABASE_URL;
-}
-
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
-export const db =
-  globalForPrisma.prisma ??
-  new PrismaClient();
+function getDb(): PrismaClient {
+  if (globalForPrisma.prisma) return globalForPrisma.prisma;
+  const client = new PrismaClient();
+  if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = client;
+  return client;
+}
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = db;
+// Lazy proxy: PrismaClient is only created on first use (at runtime), not at import (build time).
+export const db = new Proxy({} as PrismaClient, {
+  get(_, prop) {
+    return (getDb() as Record<string | symbol, unknown>)[prop];
+  },
+});
