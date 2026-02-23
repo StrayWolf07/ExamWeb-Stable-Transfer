@@ -6,7 +6,9 @@ import path from "path";
 
 const ALLOWED_EXT = new Set(["zip", "stl", "glb", "obj", "pdf"]);
 const MAX_SIZE = 10 * 1024 * 1024 * 1024; // 10GB
-const UPLOADS_DIR = path.join(process.cwd(), "public", "uploads");
+const UPLOADS_DIR = process.env.NETLIFY
+  ? path.join("/tmp", "uploads")
+  : path.join(process.cwd(), "public", "uploads");
 
 function sanitizeFilename(name: string): string {
   return name.replace(/[^a-zA-Z0-9._-]/g, "_");
